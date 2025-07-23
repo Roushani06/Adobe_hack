@@ -4,7 +4,7 @@ import re
 import os
 
 class PDFProcessor:
-    def _init_(self, file_path):
+    def __init__(self, file_path):
         self.file_path = file_path
         self.title = ""
         self.outline = []
