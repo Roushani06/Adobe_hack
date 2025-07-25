@@ -85,20 +85,20 @@ project/
 ## 📸 Screenshots
 
 ### Processing Flow
-![Processing Flow](screenshots/processing_flow.png)
+![Processing Flow](screenshots/processing_flow.png)  
 PDF processing workflow showing input → processing → output
 
 ### Sample Output
-![JSON Output](screenshots/json_output.png)
+![JSON Output](screenshots/json_output.png)  
 Example of extracted outline in JSON format
 
 ### Docker Execution
-![Docker Execution](screenshots/docker_run.png)
+![Docker Execution](screenshots/docker_run.png)  
 Running the processor in Docker container
 
 ---
 
 ## 👨‍💻 Team - ZenCode
 
-Roushani Kumari – [GitHub](https://github.com/Roushani06)
+Roushani Kumari – [GitHub](https://github.com/Roushani06)  
 Snigdha Kumar – [GitHub](https://github.com/snigdhaydv27)
