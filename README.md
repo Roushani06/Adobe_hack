@@ -38,8 +38,9 @@ pip install -r requirements.txt
 1. Place PDF files in the input/ folder  
 2. Run the extractor:
 
-bash
+```bash
 python main.py
+```
 
 
 3. Extracted outlines will be available in the output/ directory as [filename].json
@@ -48,23 +49,25 @@ python main.py
 
 #### Build the Docker image:
 
-bash
+```bash
 docker build --platform linux/amd64 -t pdf-outliner .
+```
 
 
 #### Process documents:
 
-bash
+```bash
 docker run --rm \
   -v $(pwd)/input:/app/input \
   -v $(pwd)/output:/app/output \
   --network none \
   pdf-outliner
+```
 
 
 ## 📂 Project Structure
 
-
+```bash
 project/
 ├── input/               # Input PDFs (auto-created if missing)
 ├── output/              # JSON outputs (auto-created)
@@ -76,6 +79,7 @@ project/
 ├── main.py              # Entry point
 ├── README.md
 └── requirements.txt     # pdfminer.six, unidecode
+```
 
 
 ## 📸 Screenshots
