@@ -19,14 +19,16 @@ A robust solution for extracting structured outlines from PDF documents, specifi
 
 ### Clone repository
 
-bash
+```bash
 git clone https://github.com/Roushani06/Adobe_hack.git
+```
 
 
 ### Install dependencies
 
-bash
+```bash
 pip install -r requirements.txt
+```
 
 
 ## 🏃‍♂ Usage
