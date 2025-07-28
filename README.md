@@ -33,7 +33,7 @@ pip install -r requirements.txt
 1. Place PDF files inside the `input/` directory
 2. Run the extractor
 ```bash
-py main.py
+python main.py
 ```
 or
 ```bash
