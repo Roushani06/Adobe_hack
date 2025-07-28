@@ -27,17 +27,9 @@ cd Adobe_hack
 pip install -r requirements.txt
 ```
 
-> ✅ Make sure you have `PyMuPDF==1.23.7` or compatible for PDF processing
-
-## 📄 Requirements
-
-### requirements.txt
-```
-PyMuPDF==1.23.7
-```
-
 ## 🏃‍♂ Usage
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 ### 📍 Local Execution
 1. Place PDF files inside the `input/` directory
@@ -52,17 +44,31 @@ py main.py
 1. Place PDF files in the input/ folder  
 2. Run the extractor:
 
+=======
+### 📍 Local Execution
+1. Place PDF files inside the `input/` directory
+2. Run the extractor
+>>>>>>> 70661ea392b4d9a37ad00303337f35b729de86df
 ```bash
-python main.py
+py main.py 
+```
+or  
+```bash
+python main.py 
 ```
 
+<<<<<<< HEAD
 
 3. Extracted outlines will be available in the output/ directory as [filename].json
 >>>>>>> 79bc0104fb2145c36fe7becc2b59cf27597f4ec3
+=======
+3. Output JSON files will be created in the `output/` folder
+>>>>>>> 70661ea392b4d9a37ad00303337f35b729de86df
 
 ### 🐳 Docker Execution
 
 #### Step 1: Build the Docker Image
+<<<<<<< HEAD
 ```bash
 docker build -t pdf-outliner .
 ```
@@ -70,16 +76,24 @@ docker build -t pdf-outliner .
 <<<<<<< HEAD
 #### Step 2: Run the Container 
 =======
+=======
+>>>>>>> 70661ea392b4d9a37ad00303337f35b729de86df
 ```bash
-docker build --platform linux/amd64 -t pdf-outliner .
+docker build -t pdf-outliner .
 ```
 >>>>>>> 79bc0104fb2145c36fe7becc2b59cf27597f4ec3
 
+<<<<<<< HEAD
 For Linux/macOS:  
 
 <<<<<<< HEAD
 =======
 #### Process documents:
+=======
+#### Step 2: Run the Container 
+
+For Linux/macOS:  
+>>>>>>> 70661ea392b4d9a37ad00303337f35b729de86df
 
 >>>>>>> 79bc0104fb2145c36fe7becc2b59cf27597f4ec3
 ```bash
@@ -98,6 +112,7 @@ docker run --rm `
   --network none `
   pdf-outliner
 ```
+<<<<<<< HEAD
 
 For Windows CMD:
 ```bash
@@ -115,6 +130,11 @@ docker run --rm ^
 
 ```bash
 >>>>>>> 79bc0104fb2145c36fe7becc2b59cf27597f4ec3
+=======
+
+## 📂 Project Structure
+```
+>>>>>>> 70661ea392b4d9a37ad00303337f35b729de86df
 project/
 ├── input/               # Input PDFs (auto-created if missing)
 ├── output/              # Output JSONs (auto-created)
@@ -126,6 +146,7 @@ project/
 ├── main.py              # Entry point
 ├── README.md
 └── requirements.txt     # Python dependencies
+<<<<<<< HEAD
 
 ```
 
@@ -141,6 +162,11 @@ project/
 
 ---
 
+=======
+
+```
+
+>>>>>>> 70661ea392b4d9a37ad00303337f35b729de86df
 ## 👨‍💻 Team - ZenCode
 
 - **Roushani Kumari** – [GitHub](https://github.com/Roushani06)
