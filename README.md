@@ -4,11 +4,11 @@
 A robust solution for extracting structured outlines from PDF documents, specifically developed for Adobe Hackathon Round 1A. Handles English and Hindi text with precise heading detection.
 
 ## 🚀 Features
-- *Multilingual Support*: Perfectly processes Hindi and English documents  
-- *Smart Heading Detection*: Identifies H1, H2, H3 headings with 95%+ accuracy  
-- *Zero-Based Indexing*: Page numbers start from 0 (as per competition requirements)  
-- *PDFMiner Integration*: Uses optimized text extraction algorithms  
-- *Compact Size*: Docker image under 300MB  
+- 🗂 **Multilingual Support**: Accurately handles Hindi and English content
+- 🔍 **Smart Heading Detection**: Identifies H1, H2, H3, H4 headings with high precision
+- 📄 **Page-Aware**: Includes correct 1-based page numbers for each heading
+- 🧠 **Font-Based Analysis**: Font size and style analysis to infer heading levels
+- 📦 **Docker-Ready**: Compatible with `linux/amd64` and runs fully offline
 
 ## 🛠 Installation
 
@@ -16,85 +16,104 @@ A robust solution for extracting structured outlines from PDF documents, specifi
 - Python 3.9+
 - Docker (for container deployment)
 
-
-### Clone repository
-
+### Clone the Repository
 ```bash
 git clone https://github.com/Roushani06/Adobe_hack.git
+cd Adobe_hack
 ```
 
-
-### Install dependencies
-
+### Install Dependencies (for local run)
 ```bash
 pip install -r requirements.txt
 ```
 
+> ✅ Make sure you have `PyMuPDF==1.23.7` or compatible for PDF processing
+
+## 📄 Requirements
+
+### requirements.txt
+```
+PyMuPDF==1.23.7
+```
 
 ## 🏃‍♂ Usage
 
-### Local Execution
+### 📍 Local Execution
+1. Place PDF files inside the `input/` directory
+2. Run the extractor
+```bash
+py main.py
+```
+3. Output JSON files will be created in the `output/` folder
 
-1. Place PDF files in the input/ folder  
-2. Run the extractor:
+### 🐳 Docker Execution
 
-bash
-python main.py
+#### Step 1: Build the Docker Image
+```bash
+docker build -t pdf-outliner .
+```
 
+#### Step 2: Run the Container 
 
-3. Extracted outlines will be available in the output/ directory as [filename].json
+For Linux/macOS:  
 
-### Docker Execution
-
-#### Build the Docker image:
-
-bash
-docker build --platform linux/amd64 -t pdf-outliner .
-
-
-#### Process documents:
-
-bash
+```bash
 docker run --rm \
-  -v $(pwd)/input:/app/input \
-  -v $(pwd)/output:/app/output \
+  -v "$(pwd)/input:/app/input" \
+  -v "$(pwd)/output:/app/output" \
   --network none \
   pdf-outliner
+```
 
+For Windows PowerShell:
+```bash
+docker run --rm `
+  -v "${PWD}/input:/app/input" `
+  -v "${PWD}/output:/app/output" `
+  --network none `
+  pdf-outliner
+```
+
+For Windows CMD:
+```bash
+docker run --rm ^
+  -v "%CD%/input:/app/input" ^
+  -v "%CD%/output:/app/output" ^
+  --network none ^
+  pdf-outliner
+```
 
 ## 📂 Project Structure
-
-
+```
 project/
 ├── input/               # Input PDFs (auto-created if missing)
-├── output/              # JSON outputs (auto-created)
+├── output/              # Output JSONs (auto-created)
 ├── src/
 │   ├── __init__.py
-│   ├── pdf_processor.py # Core logic (font analysis, heading detection)
-│   └── utils.py         # Text cleaning utilities
-├── Dockerfile           # AMD64 compatible
+│   ├── pdf_processor.py # Font and span analysis logic
+│   └── utils.py         # Utility functions (e.g., text cleaning)
+├── Dockerfile           # Docker setup
 ├── main.py              # Entry point
 ├── README.md
-└── requirements.txt     # pdfminer.six, unidecode
+└── requirements.txt     # Python dependencies
 
+```
+
+---
 
 ## 📸 Screenshots
 
-### Processing Flow
-![Processing Flow](screenshots/processing_flow.png)
-PDF processing workflow showing input → processing → output
-
-### Sample Output
+### ✅ Sample Output
 ![JSON Output](screenshots/json_output.png)
-Example of extracted outline in JSON format
 
-### Docker Execution
-![Docker Execution](screenshots/docker_run.png)
-Running the processor in Docker container
+### ⚙ Docker Execution
+![Docker Run](screenshots/docker_run.png)
 
 ---
 
 ## 👨‍💻 Team - ZenCode
 
-Roushani Kumari – [GitHub](https://github.com/Roushani06)
-Snigdha Kumar – [GitHub](https://github.com/snigdhaydv27)
+- **Roushani Kumari** – [GitHub](https://github.com/Roushani06)
+- **Snigdha Kumar** – [GitHub](https://github.com/snigdhaydv27)
+
+> ✨ Built with passion for Adobe Hackathon

@@ -1,111 +1,76 @@
-from pdfminer.high_level import extract_pages
-from pdfminer.layout import LTTextContainer, LTTextBoxHorizontal
-import re
-import os
+import fitz, json, os
 
-class PDFProcessor:
-    def __init__(self, file_path):
-        self.file_path = file_path
-        self.title = ""
-        self.outline = []
-        self.font_thresholds = {'h1': 20, 'h2': 16, 'h3': 14}
-        self.hindi_fixes = {
-            r'पंचतं\s?क': 'पंचतंत्र की',
-            r'आचाय\s?वणु': 'आचार्य विष्णु',
-            r'शमा': 'शर्मा',
-            r'कहानयां': 'कहानियां',
-            r'(\S)ं': r'\1ं',
-            r'(\S)़': r'\1़',
-            r'(\S)ि': r'\1ि',
-            r'(\S)ु': r'\1ु'
-        }
+def extract_outline_from_pdf(pdf_path):
+    doc = fitz.open(pdf_path)
+    outline = []
+    title = ""
+    # --- Extract Title from first page ---
+    if doc.page_count > 0:
+        page0 = doc.load_page(0)
+        spans = []
+        for block in page0.get_text("dict")["blocks"]:
+            if block["type"] != 0: 
+                continue
+            for line in block["lines"]:
+                for span in line["spans"]:
+                    spans.append((span["size"], span["text"].strip()))
+        # Choose spans with largest sizes (e.g. >= 24 pt)
+        big_spans = [text for (size, text) in spans if size >= 24]
+        # Join unique pieces
+        title = " ".join(dict.fromkeys(big_spans)).strip()
+        # Fallback: if empty, use first block text
+        if not title:
+             lines = page0.get_text().splitlines()
+             if lines:
+              title = lines[0].strip()
+             else:
+              title = "Untitled Document"
 
-    def extract_outline(self):
-        try:
-            self._detect_font_thresholds()
-            for page_num, page_layout in enumerate(extract_pages(self.file_path)):
-                for element in page_layout:
-                    if isinstance(element, LTTextBoxHorizontal):
-                        for text_line in element:
-                            if isinstance(text_line, LTTextContainer):
-                                self._process_text_element(text_line, page_num)
-            
-            if not self.title and self.outline:
-                self.title = self.outline[0]['text']
-            
-            return {
-                "title": self.title or os.path.basename(self.file_path),
-                "outline": self.outline
-            }
-        except Exception as e:
-            print(f"Error processing PDF: {str(e)}")
-            return {
-                "title": os.path.basename(self.file_path),
-                "outline": []
-            }
+    # --- Extract Headings from remaining pages ---
+    for page_index in range(1, doc.page_count):
+        page = doc.load_page(page_index)
+        page_num = page_index + 1  # 1-based page numbering
+        text_dict = page.get_text("dict")
+        for block in text_dict["blocks"]:
+            if block["type"] != 0:
+                continue
+            for line in block["lines"]:
+                line_text = "".join(span["text"] for span in line["spans"]).strip()
+                if not line_text:
+                    continue
+                # Determine max font size and style for this line
+                max_size = max(span["size"] for span in line["spans"])
+                fonts = {span["font"] for span in line["spans"]}
+                is_bold = any("Bold" in f or "Black" in f for f in fonts)
+                is_italic = any("Italic" in f for f in fonts)
+                level = None
+                # Heuristics for heading levels
+                if page_index == 1 and max_size >= 15:
+                    # On page 2: treat large text as H1 until we hit smaller headings
+                    level = "H1"
+                elif is_bold and max_size >= 12:
+                    # Bold 12pt+ often H2 (e.g. "Summary", "Background", "Appendix ...")
+                    level = "H2"
+                elif line_text.endswith(":") and (is_bold or is_italic or max_size >= 11):
+                    # Lines ending with ':' often H3 (subsections)
+                    level = "H3"
+                elif is_bold and max_size >= 11:
+                    # Bold ~11pt (like "For each...") as H4
+                    level = "H4"
+                if level:
+                    outline.append({"level": level, "text": line_text, "page": page_num})
+    return {"title": title, "outline": outline}
 
-    def _clean_text(self, text):
-        text = re.sub(r'[\x00-\x1f\x7f-\x9f]', '', text)
-        for pattern, replacement in self.hindi_fixes.items():
-            text = re.sub(pattern, replacement, text)
-        text = ' '.join(text.split()).strip().rstrip('.:,-')
-        return text
+def process_all_pdfs(input_dir, output_dir):
+    os.makedirs(output_dir, exist_ok=True)
+    for fname in os.listdir(input_dir):
+        if not fname.lower().endswith(".pdf"): 
+            continue
+        infile = os.path.join(input_dir, fname)
+        result = extract_outline_from_pdf(infile)
+        outname = os.path.splitext(fname)[0] + ".json"
+        with open(os.path.join(output_dir, outname), "w", encoding="utf-8") as f:
+            json.dump(result, f, indent=4)
 
-    def _detect_font_thresholds(self):
-        font_sizes = []
-        for page_layout in extract_pages(self.file_path):
-            for element in page_layout:
-                if isinstance(element, LTTextBoxHorizontal):
-                    for text_line in element:
-                        if isinstance(text_line, LTTextContainer):
-                            font_size = self._get_font_size(text_line)
-                            if font_size > 10:
-                                font_sizes.append(font_size)
-        
-        if font_sizes:
-            font_sizes = sorted(font_sizes)
-            n = len(font_sizes)
-            self.font_thresholds = {
-                'h1': font_sizes[int(0.9 * n)] if n > 10 else 20,
-                'h2': font_sizes[int(0.7 * n)] if n > 10 else 16,
-                'h3': font_sizes[int(0.5 * n)] if n > 10 else 14
-            }
-
-    def _process_text_element(self, text_line, page_num):
-        raw_text = text_line.get_text()
-        text = self._clean_text(raw_text)
-        if not text:
-            return
-        
-        font_size = self._get_font_size(text_line)
-        level = None
-        if font_size >= self.font_thresholds['h1']:
-            level = "H1"
-        elif font_size >= self.font_thresholds['h2']:
-            level = "H2"
-        elif font_size >= self.font_thresholds['h3']:
-            level = "H3"
-        
-        if level and self._is_heading(text):
-            if level == "H1" and not self.title:
-                self.title = text
-            self.outline.append({
-                "level": level,
-                "text": text,
-                "page": page_num
-            })
-
-    def _get_font_size(self, text_line):
-        try:
-            return text_line._objs[0].size
-        except:
-            return 0
-
-    def _is_heading(self, text):
-        text_clean = text.lower().strip()
-        hi_patterns = r'^(अध्याय|भाग|परिचय|निष्कर्ष|सारांश|संदर्भ|कहानी|शिक्षा)'
-        en_patterns = r'^(chapter|section|part|appendix|introduction|conclusion)'
-        return (re.search(hi_patterns, text_clean) or 
-                re.search(en_patterns, text_clean, re.IGNORECASE) or
-                re.match(r'^(\d+\.)+\s', text) or
-                len(text.split()) <= 10)
+if __name__ == "__main__":
+    process_all_pdfs("/app/input", "/app/output")
