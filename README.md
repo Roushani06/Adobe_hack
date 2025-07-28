@@ -85,18 +85,6 @@ project/
 
 ```
 
----
-
-## 📸 Screenshots
-
-### ✅ Sample Output
-![JSON Output](screenshots/json_output.png)
-
-### ⚙ Docker Execution
-![Docker Run](screenshots/docker_run.png)
-
----
-
 ## 👨‍💻 Team - ZenCode
 
 - **Roushani Kumari** – [GitHub](https://github.com/Roushani06)
