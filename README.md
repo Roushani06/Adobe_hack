@@ -27,15 +27,6 @@ cd Adobe_hack
 pip install -r requirements.txt
 ```
 
-> ✅ Make sure you have `PyMuPDF==1.23.7` or compatible for PDF processing
-
-## 📄 Requirements
-
-### requirements.txt
-```
-PyMuPDF==1.23.7
-```
-
 ## 🏃‍♂ Usage
 
 ### 📍 Local Execution
