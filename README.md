@@ -38,6 +38,7 @@ PyMuPDF==1.23.7
 
 ## 🏃‍♂ Usage
 
+<<<<<<< HEAD
 ### 📍 Local Execution
 1. Place PDF files inside the `input/` directory
 2. Run the extractor
@@ -45,6 +46,19 @@ PyMuPDF==1.23.7
 py main.py
 ```
 3. Output JSON files will be created in the `output/` folder
+=======
+### Local Execution
+
+1. Place PDF files in the input/ folder  
+2. Run the extractor:
+
+```bash
+python main.py
+```
+
+
+3. Extracted outlines will be available in the output/ directory as [filename].json
+>>>>>>> 79bc0104fb2145c36fe7becc2b59cf27597f4ec3
 
 ### 🐳 Docker Execution
 
@@ -53,10 +67,21 @@ py main.py
 docker build -t pdf-outliner .
 ```
 
+<<<<<<< HEAD
 #### Step 2: Run the Container 
+=======
+```bash
+docker build --platform linux/amd64 -t pdf-outliner .
+```
+>>>>>>> 79bc0104fb2145c36fe7becc2b59cf27597f4ec3
 
 For Linux/macOS:  
 
+<<<<<<< HEAD
+=======
+#### Process documents:
+
+>>>>>>> 79bc0104fb2145c36fe7becc2b59cf27597f4ec3
 ```bash
 docker run --rm \
   -v "$(pwd)/input:/app/input" \
@@ -84,7 +109,12 @@ docker run --rm ^
 ```
 
 ## 📂 Project Structure
+<<<<<<< HEAD
 ```
+=======
+
+```bash
+>>>>>>> 79bc0104fb2145c36fe7becc2b59cf27597f4ec3
 project/
 ├── input/               # Input PDFs (auto-created if missing)
 ├── output/              # Output JSONs (auto-created)
@@ -99,7 +129,7 @@ project/
 
 ```
 
----
+```
 
 ## 📸 Screenshots
 
