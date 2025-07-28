@@ -38,38 +38,53 @@ PyMuPDF==1.23.7
 
 ## 🏃‍♂ Usage
 
-### Local Execution
-
-1. Place PDF files in the input/ folder  
-2. Run the extractor:
-
-bash
-python main.py
-
-
-3. Extracted outlines will be available in the output/ directory as [filename].json
+### 📍 Local Execution
+1. Place PDF files inside the `input/` directory
+2. Run the extractor
+```bash
+py main.py
+```
+3. Output JSON files will be created in the `output/` folder
 
 ### 🐳 Docker Execution
 
-#### Build the Docker image:
+#### Step 1: Build the Docker Image
+```bash
+docker build -t pdf-outliner .
+```
 
-bash
-docker build --platform linux/amd64 -t pdf-outliner .
+#### Step 2: Run the Container 
 
+For Linux/macOS:  
 
-#### Process documents:
-
-bash
+```bash
 docker run --rm \
   -v "$(pwd)/input:/app/input" \
   -v "$(pwd)/output:/app/output" \
   --network none \
   pdf-outliner
+```
 
+For Windows PowerShell:
+```bash
+docker run --rm `
+  -v "${PWD}/input:/app/input" `
+  -v "${PWD}/output:/app/output" `
+  --network none `
+  pdf-outliner
+```
+
+For Windows CMD:
+```bash
+docker run --rm ^
+  -v "%CD%/input:/app/input" ^
+  -v "%CD%/output:/app/output" ^
+  --network none ^
+  pdf-outliner
+```
 
 ## 📂 Project Structure
-
-
+```
 project/
 ├── input/               # Input PDFs (auto-created if missing)
 ├── output/              # Output JSONs (auto-created)
@@ -80,27 +95,25 @@ project/
 ├── Dockerfile           # Docker setup
 ├── main.py              # Entry point
 ├── README.md
-└── requirements.txt     # pdfminer.six, unidecode
+└── requirements.txt     # Python dependencies
+
+```
 
 ---
 
 ## 📸 Screenshots
 
-### Processing Flow
-![Processing Flow](screenshots/processing_flow.png)
-PDF processing workflow showing input → processing → output
-
-### Sample Output
+### ✅ Sample Output
 ![JSON Output](screenshots/json_output.png)
-Example of extracted outline in JSON format
 
-### Docker Execution
-![Docker Execution](screenshots/docker_run.png)
-Running the processor in Docker container
+### ⚙ Docker Execution
+![Docker Run](screenshots/docker_run.png)
 
 ---
 
 ## 👨‍💻 Team - ZenCode
 
-Roushani Kumari – [GitHub](https://github.com/Roushani06)
-Snigdha Kumar – [GitHub](https://github.com/snigdhaydv27)
+- **Roushani Kumari** – [GitHub](https://github.com/Roushani06)
+- **Snigdha Kumar** – [GitHub](https://github.com/snigdhaydv27)
+
+> ✨ Built with passion for Adobe Hackathon
