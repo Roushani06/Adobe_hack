@@ -33,8 +33,13 @@ pip install -r requirements.txt
 1. Place PDF files inside the `input/` directory
 2. Run the extractor
 ```bash
-py main.py
+py main.py 
 ```
+or  
+```bash
+python main.py 
+```
+
 3. Output JSON files will be created in the `output/` folder
 
 ### 🐳 Docker Execution
