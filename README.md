@@ -70,15 +70,6 @@ docker run --rm `
   pdf-outliner
 ```
 
-For Windows CMD:
-```bash
-docker run --rm ^
-  -v "%CD%/input:/app/input" ^
-  -v "%CD%/output:/app/output" ^
-  --network none ^
-  pdf-outliner
-```
-
 ## 📂 Project Structure
 ```
 project/
